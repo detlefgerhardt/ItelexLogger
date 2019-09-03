@@ -1,5 +1,6 @@
 # ItelexLogger
 The idea of ItelexLogger is to connect a PC via RS232 (real or USB adapter) to the i-telex debug port. ItelexLogger analyses the debug information, extracts all plain text information and displays it. All text information and all debug outputs are written to two separate log files.
+ItelexLogger is a single EXE file. No installation required.
 
 Important: In the i-Telex setup, set the "Logging level at serial port" to 4.
 
