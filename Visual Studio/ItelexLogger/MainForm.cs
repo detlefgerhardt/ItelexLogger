@@ -33,6 +33,7 @@ namespace ItelexLogger
 		private LogView _logView;
 
 		private object _commLogLock = new object();
+		private object _debugLogLock = new object();
 
 		private ComPortManager _comPortManager;
 
@@ -54,11 +55,16 @@ namespace ItelexLogger
 			OutputListView.Columns[0].Width = OutputListView.Width - 4;
 			OutputListView.HeaderStyle = ColumnHeaderStyle.None;
 
+			DebugLog($"{Helper.GetVersion()}\r\n");
+			CommLog($"{Helper.GetVersion()}\r\n");
+			this.Text = Helper.GetVersion();
+
 			ComPortsCb.DataSource = _comPortManager.GetPorts();
 			ComPortsCb.DisplayMember = "ComPort";
 
 			//Init("COM6");
 		}
+
 		private void ConnectCb_Click(object sender, EventArgs e)
 		{
 			if (!ConnectCb.Checked)
@@ -68,6 +74,7 @@ namespace ItelexLogger
 					Deinit();
 				}
 				ConnectCb.Text = "Connect";
+				DebugLog($"Disconnected from COM port\r\n");
 				//ConnectCb.Checked = false;
 			}
 			else
@@ -83,6 +90,7 @@ namespace ItelexLogger
 							ConnectCb.Text = "Disconnect";
 							ConnectCb.Checked = true;
 							Init();
+							DebugLog($"Connected to COM port {item.ComPort}\r\n");
 						}
 					}
 				}
@@ -606,7 +614,9 @@ namespace ItelexLogger
 			{
 				try
 				{
-					string fullName = Path.Combine(Constants.LOG_PATH, Constants.COMM_LOG);
+					//string path = Constants.LOG_PATH;
+					string path = Helper.GetExePath();
+					string fullName = Path.Combine(path, Constants.COMM_LOG);
 					File.AppendAllText(fullName, text);
 				}
 				catch (Exception)
@@ -617,11 +627,13 @@ namespace ItelexLogger
 
 		private void DebugLog(string text)
 		{
-			lock (_commLogLock)
+			lock (_debugLogLock)
 			{
 				try
 				{
-					string fullName = Path.Combine(Constants.LOG_PATH, Constants.DEBUG_LOG);
+					//string path = Constants.LOG_PATH;
+					string path = Helper.GetExePath();
+					string fullName = Path.Combine(path, Constants.DEBUG_LOG);
 					File.AppendAllText(fullName, text);
 				}
 				catch (Exception)

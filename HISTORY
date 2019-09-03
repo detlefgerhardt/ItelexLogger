@@ -1,0 +1,6 @@
+
+ItelexLogger Version history
+
+1.0.0.0 - New: First version
+1.0.0.1 - Add: Version information
+          Chg: Now logging to the program directory

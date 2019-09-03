@@ -17,16 +17,12 @@ namespace ItelexLogger
 			return DateTime.Now.Ticks / 10000;
 		}
 
-#if false
 		public static string GetVersion()
 		{
-			//int? expireDays = ExpireDays();
-			//string expireStr = expireDays != null ? $" expires in {expireDays} days" : "";
 			string expireStr = "";
 #if DEBUG
 			// show date and time in debug version
 			string buildTime = Properties.Resources.BuildDate.Trim(new char[] { '\n', '\r' }) + " Debug";
-			//string buildTime = ConfigurationManager.AppSettings.Get("builddate") + " Debug";
 
 #else
 			// show only date in release version
@@ -34,15 +30,12 @@ namespace ItelexLogger
 			buildTime = buildTime.Substring(0, 10);
 #endif
 			return $"{Constants.PROGRAM_NAME}  V{Application.ProductVersion}  (Build={buildTime}) {expireStr}";
-			//return $"{Constants.PROGRAM_NAME}  V{Application.ProductVersion}  (Build={buildTime}) - Special Carsten Version";
 		}
 
 		public static string GetVersionCode()
 		{
 			return Application.ProductVersion;
-			//return $"{version[0]}{version[1]}{version[2]}{version[3]}";
 		}
-#endif
 
 		public static string GetExePath()
 		{
