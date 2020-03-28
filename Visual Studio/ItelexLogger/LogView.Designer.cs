@@ -50,7 +50,7 @@
 			// 
 			// Line
 			// 
-			this.Line.Width = -1;
+			this.Line.Width = 560;
 			// 
 			// CloseBtn
 			// 
@@ -72,8 +72,11 @@
 			this.Controls.Add(this.LogListView);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "LogView";
-			this.Text = "i-Telex Log Viewer";
+			this.Text = "i-TelexLogger Log";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LogView_FormClosed);
+			this.Load += new System.EventHandler(this.LogView_Load);
+			this.ResizeEnd += new System.EventHandler(this.LogView_ResizeEnd);
+			this.LocationChanged += new System.EventHandler(this.LogView_LocationChanged);
 			this.ResumeLayout(false);
 
 		}

@@ -65,6 +65,30 @@ namespace ItelexLogger
 			//Init("COM6");
 		}
 
+		private void ComPortsCb_MouseClick(object sender, MouseEventArgs e)
+		{
+			// save selection
+			ComPortSelectionItem saveItem = (ComPortSelectionItem)ComPortsCb.SelectedItem;
+
+			// refresh com port list
+			List<ComPortSelectionItem> newComPortList = _comPortManager.GetPorts();
+			ComPortsCb.DataSource = newComPortList;
+
+			// restore selection
+			if (saveItem != null)
+			{
+				foreach (ComPortSelectionItem selItem in newComPortList)
+				{
+					if (selItem.ComNumber == saveItem.ComNumber)
+					{
+						ComPortsCb.SelectedItem = saveItem;
+						ComPortsCb.Text = saveItem.ComPort;
+						break;
+					}
+				}
+			}
+		}
+
 		private void ConnectCb_Click(object sender, EventArgs e)
 		{
 			if (!ConnectCb.Checked)
@@ -156,7 +180,10 @@ namespace ItelexLogger
 			Debug.WriteLine(line);
 
 			string timestamp = line.Substring(0, 11);
-			line = line.Substring(13);
+			if (line.Length > 13)
+			{
+				line = line.Substring(13);
+			};
 
 			string col1;
 			line = GetNextColumn(line, out col1);
@@ -634,7 +661,7 @@ namespace ItelexLogger
 					//string path = Constants.LOG_PATH;
 					string path = Helper.GetExePath();
 					string fullName = Path.Combine(path, Constants.DEBUG_LOG);
-					File.AppendAllText(fullName, text);
+					File.AppendAllText(fullName, $"{DateTime.Now:dd.MM.yyyy} {text}");
 				}
 				catch (Exception)
 				{
@@ -650,7 +677,7 @@ namespace ItelexLogger
 		{
 			if (_logView == null)
 			{
-				_logView = new LogView();
+				_logView = new LogView(new Point(this.Bounds.X + this.Width, this.Bounds.Y));
 				_logView.Show();
 				_logView.Closed += LogView_Closed;
 			}
@@ -664,6 +691,11 @@ namespace ItelexLogger
 		private void LogView_Closed()
 		{
 			_logView = null;
+		}
+
+		private void MainForm_LocationChanged(object sender, EventArgs e)
+		{
+			_logView?.ChangePosition(Bounds.X + this.Width, Bounds.Y);
 		}
 	}
 }

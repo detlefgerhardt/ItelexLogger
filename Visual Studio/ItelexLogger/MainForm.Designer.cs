@@ -61,6 +61,7 @@
 			this.ComPortsCb.Name = "ComPortsCb";
 			this.ComPortsCb.Size = new System.Drawing.Size(121, 21);
 			this.ComPortsCb.TabIndex = 2;
+			this.ComPortsCb.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ComPortsCb_MouseClick);
 			// 
 			// ConnectCb
 			// 
@@ -98,6 +99,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainForm";
 			this.Text = "i-Telex Logger";
+			this.LocationChanged += new System.EventHandler(this.MainForm_LocationChanged);
 			this.Click += new System.EventHandler(this.MainForm_Click);
 			this.ResumeLayout(false);
 			this.PerformLayout();
