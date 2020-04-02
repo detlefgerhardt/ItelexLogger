@@ -42,58 +42,14 @@ namespace ItelexLogger
 			return Application.StartupPath;
 		}
 
-		/*
-		public static bool IsExpired()
+		public static string GetLogPath()
 		{
-			int? expireDays = ExpireDays();
-			if (expireDays==null)
-			{
-				// invalid expire date
-				return false;
-			}
-			return expireDays == 0;
-		}
-
-		public static int? ExpireDays()
-		{
-			DateTime? expireDate = ExpireDate();
-			if (expireDate == null)
-			{
-				// invalid build date, no expire
-				return null;
-			}
-			int expireDays = (int)Math.Ceiling(expireDate.Value.Subtract(DateTime.Now).TotalDays);
-			if (expireDays < 0)
-				expireDays = 0;
-			return expireDays;
-		}
-
-		public static DateTime? ExpireDate()
-		{
-			DateTime? buildTime = BuildTime();
-			if (buildTime == null)
-			{
-				// invalid build date
-				return null;
-			}
-			return buildTime.Value.AddDays(Constants.EXPIRE_DAYS);
-		}
-		*/
-
-#if false
-		public static DateTime? BuildTime()
-		{
-			//string dateStr = ConfigurationManager.AppSettings.Get("builddate");
-			string dateStr = Properties.Resources.BuildDate.Trim();
-			DateTime dt;
-			if (!DateTime.TryParse(dateStr, out dt))
-			{
-				// invalid build time
-				return null;
-			}
-			return dt;
-		}
+#if DEBUG
+			return Constants.LOG_PATH;
+#else
+			return GetExePath();
 #endif
+		}
 
 		public static List<string> DumpByteArray(byte[] buffer, int pos, int len = -1)
 		{

@@ -5,3 +5,6 @@ ItelexLogger Version history
 1.0.0.1 - Add: Version information
           Chg: Now logging to the program directory
 1.0.0.2 - Chg: Improved logview
+1.0.0.3 - Fix: Problem with more than one command in one send/recv line
+          Fix: Log-path corrected
+

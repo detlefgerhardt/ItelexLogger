@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.IO.Ports;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ItelexLogger
@@ -61,9 +56,21 @@ namespace ItelexLogger
 
 			ComPortsCb.DataSource = _comPortManager.GetPorts();
 			ComPortsCb.DisplayMember = "ComPort";
-
-			//Init("COM6");
 		}
+
+		/*
+		private void Test()
+		{
+			string fullName = Path.Combine(Constants.LOG_PATH, "test.log");
+			string[] lines = File.ReadAllLines(fullName);
+
+			Init();
+			foreach(string line in lines)
+			{
+				DoLine(line);
+			}
+		}
+		*/
 
 		private void ComPortsCb_MouseClick(object sender, MouseEventArgs e)
 		{
@@ -179,7 +186,7 @@ namespace ItelexLogger
 
 			Debug.WriteLine(line);
 
-			string timestamp = line.Substring(0, 11);
+			//string timestamp = line.Substring(0, 11);
 			if (line.Length > 13)
 			{
 				line = line.Substring(13);
@@ -374,7 +381,7 @@ namespace ItelexLogger
 			}
 
 			data = data.Trim();
-			if (data[0]!='(')
+			if (data[0] != '(')
 			{
 				return;
 			}
@@ -382,10 +389,10 @@ namespace ItelexLogger
 			List<string> list = new List<string>();
 			string item = "";
 			bool quote = false;
-			for (int i=0; i<data.Length; i++)
+			for (int i = 0; i < data.Length; i++)
 			{
 				char chr = data[i];
-				switch(chr)
+				switch (chr)
 				{
 					case ' ':
 						if (!quote)
@@ -428,41 +435,41 @@ namespace ItelexLogger
 				list.Add(item);
 			}
 
-			byte[] buffer = new byte[256];
-			int cnt = 0;
+			byte[] buffer = new byte[512];
+			int bufferCnt = 0;
 			for (int i = 1; i < list.Count; i++)
 			{
-				if (list[i]=="-->")
+				if (list[i] == "-->")
 				{
 					break;
 				}
-				if (list[i][0]=='\'')
+				if (list[i][0] == '\'')
 				{
-					for (int c=1; c<list[i].Length; c++)
+					for (int c = 1; c < list[i].Length; c++)
 					{
-						buffer[cnt++] = (byte)list[i][c];
+						buffer[bufferCnt++] = (byte)list[i][c];
 					}
 					continue;
 				}
 
 				try
 				{
-					buffer[cnt++] = Convert.ToByte(list[i], 16);
+					buffer[bufferCnt++] = Convert.ToByte(list[i], 16);
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
-					buffer[cnt++] = 0;
+					buffer[bufferCnt++] = 0;
 				}
 			}
 
-			if (cnt<2)
+			if (bufferCnt < 2)
 			{
 				return;
 			}
 
-			if (_connectionType==ConnectionType.Unknown)
+			if (_connectionType == ConnectionType.Unknown)
 			{
-				if (buffer[0]==0x0D)
+				if (buffer[0] == 0x0D)
 				{
 					_connectionType = ConnectionType.Ascii;
 					WriteMessage($"ASCII");
@@ -474,61 +481,63 @@ namespace ItelexLogger
 				}
 			}
 
-			if (_connectionType==ConnectionType.Ascii)
+			if (_connectionType == ConnectionType.Ascii)
 			{
-				string ascii = Encoding.UTF8.GetString(buffer, 0, cnt);
+				string ascii = Encoding.UTF8.GetString(buffer, 0, bufferCnt);
 				ascii = ConvertAscii(ascii);
 				WriteOutput(ascii);
 				_needNewline = true;
 				return;
 			}
 
-			ItelexPacket packet = new ItelexPacket(buffer);
-
-			//int cmd = buffer[0];
-			//int len = buffer[1];
-
-			switch(packet.CommandType)
+			int bufferPos = 0;
+			while (bufferPos < bufferCnt)
 			{
-				case ItelexCommands.Heartbeart:
-					break;
-				case ItelexCommands.BaudotData:  // i-telex data
-					if (packet.Len==0)
-					{
-						return;
-					}
-					string ascii = CodeConversion.BaudotStringToAscii(packet.Data, ref _shiftState, CodeStandards.Ita2);
-					ascii = ConvertAscii(ascii);
-					WriteOutput(ascii);
-					_needNewline = true;
-					break;
-				case ItelexCommands.End:  // verbindung beenden
-					WriteMessage($"{dir} disconnect ({DateTime.Now})");
-					break;
-				case ItelexCommands.ProtocolVersion:
-					if (dir == Directions.Recv)
-					{
-						if (packet.Data.Length > 1)
+				ItelexPacket packet = new ItelexPacket(buffer, bufferPos);
+				bufferPos += packet.Len + 2;
+
+				switch (packet.CommandType)
+				{
+					case ItelexCommands.Heartbeart:
+						break;
+					case ItelexCommands.BaudotData:  // i-telex data
+						if (packet.Len == 0)
 						{
-							// get version string
-							string versionStr = Encoding.ASCII.GetString(packet.Data, 1, packet.Data.Length - 1);
-							versionStr = versionStr.TrimEnd('\x00'); // remove 00-byte suffix
-							WriteMessage($"{dir} protocol vers {packet.Data[0]} '{versionStr}'");
+							return;
 						}
-					}
-					break;
-				case ItelexCommands.DirectDial:
-					if (dir == Directions.Recv)
-					{
-						_extension = packet.Data[0];
-						WriteMessage($"{dir} direct dial {_extension}");
-					}
-					break;
-				case ItelexCommands.Ack:
-					break;
-				default:
-					Debug.WriteLine($"{dir} {packet.CommandType}");
-					break;
+						string ascii = CodeConversion.BaudotStringToAscii(packet.Data, ref _shiftState, CodeStandards.Ita2);
+						ascii = ConvertAscii(ascii);
+						WriteOutput(ascii);
+						_needNewline = true;
+						break;
+					case ItelexCommands.End:  // verbindung beenden
+						WriteMessage($"{dir} disconnect ({DateTime.Now})");
+						break;
+					case ItelexCommands.ProtocolVersion:
+						if (dir == Directions.Recv)
+						{
+							if (packet.Data.Length > 1)
+							{
+								// get version string
+								string versionStr = Encoding.ASCII.GetString(packet.Data, 1, packet.Data.Length - 1);
+								versionStr = versionStr.TrimEnd('\x00'); // remove 00-byte suffix
+								WriteMessage($"{dir} protocol vers {packet.Data[0]} '{versionStr}'");
+							}
+						}
+						break;
+					case ItelexCommands.DirectDial:
+						if (dir == Directions.Recv)
+						{
+							_extension = packet.Data[0];
+							WriteMessage($"{dir} direct dial {_extension}");
+						}
+						break;
+					case ItelexCommands.Ack:
+						break;
+					default:
+						Debug.WriteLine($"{dir} {packet.CommandType}");
+						break;
+				}
 			}
 		}
 
@@ -641,9 +650,7 @@ namespace ItelexLogger
 			{
 				try
 				{
-					//string path = Constants.LOG_PATH;
-					string path = Helper.GetExePath();
-					string fullName = Path.Combine(path, Constants.COMM_LOG);
+					string fullName = Path.Combine(Helper.GetLogPath(), Constants.COMM_LOG);
 					File.AppendAllText(fullName, text);
 				}
 				catch (Exception)
@@ -658,9 +665,7 @@ namespace ItelexLogger
 			{
 				try
 				{
-					//string path = Constants.LOG_PATH;
-					string path = Helper.GetExePath();
-					string fullName = Path.Combine(path, Constants.DEBUG_LOG);
+					string fullName = Path.Combine(Helper.GetLogPath(), Constants.DEBUG_LOG);
 					File.AppendAllText(fullName, $"{DateTime.Now:dd.MM.yyyy} {text}");
 				}
 				catch (Exception)

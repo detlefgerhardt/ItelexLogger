@@ -56,7 +56,6 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="ItelexPacket.cs" />
-    <Compile Include="Logging.cs" />
     <Compile Include="LogLister.cs" />
     <Compile Include="LogView.cs">
       <SubType>Form</SubType>

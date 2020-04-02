@@ -27,19 +27,23 @@ namespace ItelexLogger
 
 		public ItelexPacket() { }
 
-		public ItelexPacket(byte[] buffer)
+		public ItelexPacket(byte[] buffer, int index)
 		{
-			Command = buffer[0];
-			int len = buffer[1];
+			Command = buffer[index];
+			int len = buffer[index + 1];
 			if (len > 0)
 			{
 				Data = new byte[len];
-				Buffer.BlockCopy(buffer, 2, Data, 0, len);
+				Buffer.BlockCopy(buffer, index + 2, Data, 0, len);
 			}
 			else
 			{
 				Data = null;
 			}
+		}
+
+		public ItelexPacket(byte[] buffer): this(buffer, 0)
+		{
 		}
 
 		/*
