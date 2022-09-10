@@ -11,6 +11,7 @@ namespace ItelexLogger
 	{
 		private SerialPort _serialPort = null;
 
+		public string ComPortName;
 
 		public delegate void DataReceivedEventHandler(string data);
 		public event DataReceivedEventHandler DataReceived;
@@ -109,33 +110,46 @@ namespace ItelexLogger
 
 		public bool OpenComPort(string comPortName)
 		{
-			SerialPortFixer.Execute(comPortName);
-			_serialPort = new SerialPort(comPortName);
-			_serialPort.BaudRate = 9600;
-			_serialPort.DataBits = 8;
-			_serialPort.Parity = Parity.None;
-			_serialPort.StopBits = StopBits.One;
-			_serialPort.Handshake = Handshake.None;
-			_serialPort.DataReceived += SerialPort_DataReceived;
-			//_serialPort.RtsEnable = false;
-			//_serialPort.DtrEnable = true;
-			//serialPort.Encoding = Encoding.ASCII;
+			try
+			{
+				SerialPortFixer.Execute(comPortName);
+				_serialPort = new SerialPort(comPortName);
+				_serialPort.BaudRate = 9600;
+				_serialPort.DataBits = 8;
+				_serialPort.Parity = Parity.None;
+				_serialPort.StopBits = StopBits.One;
+				_serialPort.Handshake = Handshake.None;
+				_serialPort.DataReceived += SerialPort_DataReceived;
+				//_serialPort.RtsEnable = false;
+				//_serialPort.DtrEnable = true;
+				//serialPort.Encoding = Encoding.ASCII;
 
-			// Set the read/write timeouts
-			_serialPort.ReadTimeout = 500;
-			_serialPort.WriteTimeout = 500;
+				// Set the read/write timeouts
+				_serialPort.ReadTimeout = 500;
+				_serialPort.WriteTimeout = 500;
 
-			_serialPort.Open();
-			return true;
+				_serialPort.Open();
+
+				ComPortName = comPortName;
+
+				return true;
+			}
+			catch(Exception ex)
+			{
+				CloseComPort();
+				return false;
+			}
 		}
 
 		public void CloseComPort()
 		{
-			if (_serialPort!=null)
+			if (_serialPort != null)
 			{
 				_serialPort.Close();
+				_serialPort.DataReceived -= SerialPort_DataReceived;
 				_serialPort = null;
 			}
+			ComPortName = null;
 		}
 
 		private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)

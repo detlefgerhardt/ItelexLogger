@@ -56,12 +56,19 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="ItelexPacket.cs" />
+    <Compile Include="Logging.cs" />
     <Compile Include="LogLister.cs" />
-    <Compile Include="LogView.cs">
+    <Compile Include="LogViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LogView.Designer.cs">
-      <DependentUpon>LogView.cs</DependentUpon>
+    <Compile Include="LogViewForm.Designer.cs">
+      <DependentUpon>LogViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogViewControl.Designer.cs">
+      <DependentUpon>LogViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -72,11 +79,17 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialPortFixer.cs" />
-    <EmbeddedResource Include="LogView.resx">
-      <DependentUpon>LogView.cs</DependentUpon>
+    <EmbeddedResource Include="LogViewForm.resx">
+      <DependentUpon>LogViewForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogViewControl.resx">
+      <DependentUpon>LogViewControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -1,6 +1,6 @@
 ﻿namespace ItelexLogger
 {
-	partial class LogView
+	partial class LogViewForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogView));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogViewForm));
 			this.LogListView = new System.Windows.Forms.ListView();
 			this.Line = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.CloseBtn = new System.Windows.Forms.Button();

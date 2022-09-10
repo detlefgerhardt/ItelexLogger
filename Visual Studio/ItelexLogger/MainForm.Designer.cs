@@ -29,90 +29,110 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			this.OutputListView = new System.Windows.Forms.ListView();
-			this.Line = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.ComPortsCb = new System.Windows.Forms.ComboBox();
-			this.ConnectCb = new System.Windows.Forms.CheckBox();
-			this.ShowLogCb = new System.Windows.Forms.CheckBox();
+			this.TabCtrl = new System.Windows.Forms.TabControl();
+			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.LoggerCtrl1 = new ItelexLogger.LoggerControl();
+			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.LoggerCtrl2 = new ItelexLogger.LoggerControl();
+			this.tabPage3 = new System.Windows.Forms.TabPage();
+			this.LoggerCtrl3 = new ItelexLogger.LoggerControl();
+			this.TabCtrl.SuspendLayout();
+			this.tabPage1.SuspendLayout();
+			this.tabPage2.SuspendLayout();
+			this.tabPage3.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// OutputListView
+			// TabCtrl
 			// 
-			this.OutputListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.OutputListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Line});
-			this.OutputListView.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.OutputListView.Location = new System.Drawing.Point(13, 46);
-			this.OutputListView.Name = "OutputListView";
-			this.OutputListView.Size = new System.Drawing.Size(559, 364);
-			this.OutputListView.TabIndex = 0;
-			this.OutputListView.UseCompatibleStateImageBehavior = false;
+			this.TabCtrl.Controls.Add(this.tabPage1);
+			this.TabCtrl.Controls.Add(this.tabPage2);
+			this.TabCtrl.Controls.Add(this.tabPage3);
+			this.TabCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.TabCtrl.Location = new System.Drawing.Point(0, 0);
+			this.TabCtrl.Name = "TabCtrl";
+			this.TabCtrl.SelectedIndex = 0;
+			this.TabCtrl.Size = new System.Drawing.Size(636, 424);
+			this.TabCtrl.TabIndex = 5;
 			// 
-			// Line
+			// tabPage1
 			// 
-			this.Line.Width = -1;
+			this.tabPage1.Controls.Add(this.LoggerCtrl1);
+			this.tabPage1.Location = new System.Drawing.Point(4, 22);
+			this.tabPage1.Name = "tabPage1";
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage1.Size = new System.Drawing.Size(628, 398);
+			this.tabPage1.TabIndex = 3;
+			this.tabPage1.Text = "tabPage1";
+			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// ComPortsCb
+			// LoggerCtrl1
 			// 
-			this.ComPortsCb.FormattingEnabled = true;
-			this.ComPortsCb.Location = new System.Drawing.Point(13, 13);
-			this.ComPortsCb.Name = "ComPortsCb";
-			this.ComPortsCb.Size = new System.Drawing.Size(121, 21);
-			this.ComPortsCb.TabIndex = 2;
-			this.ComPortsCb.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ComPortsCb_MouseClick);
+			this.LoggerCtrl1.Location = new System.Drawing.Point(3, 3);
+			this.LoggerCtrl1.Name = "LoggerCtrl1";
+			this.LoggerCtrl1.Size = new System.Drawing.Size(599, 375);
+			this.LoggerCtrl1.TabIndex = 1;
 			// 
-			// ConnectCb
+			// tabPage2
 			// 
-			this.ConnectCb.Appearance = System.Windows.Forms.Appearance.Button;
-			this.ConnectCb.AutoSize = true;
-			this.ConnectCb.Location = new System.Drawing.Point(141, 13);
-			this.ConnectCb.Name = "ConnectCb";
-			this.ConnectCb.Size = new System.Drawing.Size(57, 23);
-			this.ConnectCb.TabIndex = 3;
-			this.ConnectCb.Text = "Connect";
-			this.ConnectCb.UseVisualStyleBackColor = true;
-			this.ConnectCb.Click += new System.EventHandler(this.ConnectCb_Click);
+			this.tabPage2.Controls.Add(this.LoggerCtrl2);
+			this.tabPage2.Location = new System.Drawing.Point(4, 22);
+			this.tabPage2.Name = "tabPage2";
+			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage2.Size = new System.Drawing.Size(628, 398);
+			this.tabPage2.TabIndex = 1;
+			this.tabPage2.Text = "tabPage2";
+			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
-			// ShowLogCb
+			// LoggerCtrl2
 			// 
-			this.ShowLogCb.Appearance = System.Windows.Forms.Appearance.Button;
-			this.ShowLogCb.AutoSize = true;
-			this.ShowLogCb.Location = new System.Drawing.Point(519, 11);
-			this.ShowLogCb.Name = "ShowLogCb";
-			this.ShowLogCb.Size = new System.Drawing.Size(61, 23);
-			this.ShowLogCb.TabIndex = 4;
-			this.ShowLogCb.Text = "Show log";
-			this.ShowLogCb.UseVisualStyleBackColor = true;
-			this.ShowLogCb.Click += new System.EventHandler(this.ShowLogCb_Click);
+			this.LoggerCtrl2.Location = new System.Drawing.Point(3, 3);
+			this.LoggerCtrl2.Name = "LoggerCtrl2";
+			this.LoggerCtrl2.Size = new System.Drawing.Size(599, 375);
+			this.LoggerCtrl2.TabIndex = 0;
+			// 
+			// tabPage3
+			// 
+			this.tabPage3.Controls.Add(this.LoggerCtrl3);
+			this.tabPage3.Location = new System.Drawing.Point(4, 22);
+			this.tabPage3.Name = "tabPage3";
+			this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage3.Size = new System.Drawing.Size(628, 398);
+			this.tabPage3.TabIndex = 2;
+			this.tabPage3.Text = "tabPage3";
+			this.tabPage3.UseVisualStyleBackColor = true;
+			// 
+			// LoggerCtrl3
+			// 
+			this.LoggerCtrl3.Location = new System.Drawing.Point(3, 3);
+			this.LoggerCtrl3.Name = "LoggerCtrl3";
+			this.LoggerCtrl3.Size = new System.Drawing.Size(599, 375);
+			this.LoggerCtrl3.TabIndex = 1;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(584, 422);
-			this.Controls.Add(this.ShowLogCb);
-			this.Controls.Add(this.ConnectCb);
-			this.Controls.Add(this.ComPortsCb);
-			this.Controls.Add(this.OutputListView);
+			this.ClientSize = new System.Drawing.Size(636, 424);
+			this.Controls.Add(this.TabCtrl);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainForm";
 			this.Text = "i-Telex Logger";
-			this.LocationChanged += new System.EventHandler(this.MainForm_LocationChanged);
-			this.Click += new System.EventHandler(this.MainForm_Click);
+			this.TabCtrl.ResumeLayout(false);
+			this.tabPage1.ResumeLayout(false);
+			this.tabPage2.ResumeLayout(false);
+			this.tabPage3.ResumeLayout(false);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.ListView OutputListView;
-		private System.Windows.Forms.ColumnHeader Line;
-		private System.Windows.Forms.ComboBox ComPortsCb;
-		private System.Windows.Forms.CheckBox ConnectCb;
-		private System.Windows.Forms.CheckBox ShowLogCb;
+		private System.Windows.Forms.TabControl TabCtrl;
+		private System.Windows.Forms.TabPage tabPage2;
+		private LoggerControl LoggerCtrl2;
+		private System.Windows.Forms.TabPage tabPage3;
+		private LoggerControl LoggerCtrl3;
+		private System.Windows.Forms.TabPage tabPage1;
+		private LoggerControl LoggerCtrl1;
 	}
 }
 

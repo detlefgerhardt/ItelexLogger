@@ -8,7 +8,7 @@
 #else
 		public const string LOG_PATH = "";
 #endif
-		public const string DEBUG_LOG = "itelexlogger_debug.log";
-		public const string COMM_LOG = "itelexlogger_comm.log";
+		public const string DEBUG_LOG = "itelexlogger_debug";
+		public const string COMM_LOG = "itelexlogger_comm";
 	}
 }

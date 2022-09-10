@@ -7,4 +7,7 @@ ItelexLogger Version history
 1.0.0.2 - Chg: Improved logview
 1.0.0.3 - Fix: Problem with more than one command in one send/recv line
           Fix: Log-path corrected
+1.0.5 - Fix: detection of ASCII/i-Telex texting
+        Fix: some minor bugfixes
+
 

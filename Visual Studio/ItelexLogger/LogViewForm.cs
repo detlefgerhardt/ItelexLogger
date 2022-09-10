@@ -10,19 +10,31 @@ using System.Windows.Forms;
 
 namespace ItelexLogger
 {
-	public partial class LogView : Form
+	public partial class LogViewForm : Form
 	{
+		private const string TAG = nameof(LogViewForm);
+
 		public delegate void ClosedEventHandler();
 		public event ClosedEventHandler Closed;
 
 		private Point _position;
 		private Point? _tempPosition;
 
-		public LogView(Point position)
+		private LogLister _logLister;
+		private Logging _logging;
+
+		private string _title;
+
+		public LogViewForm(Point position, string title, LogLister logLister, Logging logging)
 		{
 			_tempPosition = position;
+			_title = title;
+			_logLister = logLister;
+			_logging = logging;
 
 			InitializeComponent();
+
+			this.Text = $"LogView {title}";
 
 			LogListView.View = View.Details;
 			LogListView.HideSelection = true;
@@ -34,7 +46,7 @@ namespace ItelexLogger
 			//LogLister.Instance.Add("1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
 
 			LogListView.Items.Clear();
-			foreach (string line in LogLister.Instance.LogList)
+			foreach (string line in _logLister.LogList)
 			{
 				LogListView.Items.Add(new ListViewItem(line));
 			}
@@ -42,16 +54,25 @@ namespace ItelexLogger
 
 		public void Log(string line)
 		{
-			Helper.ControlInvokeRequired(LogListView, () =>
+			try
 			{
-				LogListView.Items.Add(new ListViewItem(line));
-				LogListView.EnsureVisible(LogListView.Items.Count - 1);
-				LogListView.Refresh();
-			});
+				Helper.ControlInvokeRequired(LogListView, () =>
+				{
+					LogListView.Items.Add(new ListViewItem(line));
+					LogListView.EnsureVisible(LogListView.Items.Count - 1);
+					LogListView.Refresh();
+				});
+			}
+			catch(Exception ex)
+			{
+				_logging.Error(TAG, nameof(Log), line, ex);
+			}
 		}
 
 		private void LogView_Load(object sender, EventArgs e)
 		{
+			return;
+
 			if (_tempPosition != null)
 			{
 				SetPosition(_tempPosition.Value.X, _tempPosition.Value.Y);
